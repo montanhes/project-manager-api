@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProjectRequest;
 use App\Repositories\Interfaces\ProjectRepositoryInterface;
 use App\Services\ProjectProgressService;
 use Illuminate\Http\Request;
@@ -30,9 +31,9 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProjectRequest $request)
     {
-        $project = $this->projectRepository->create($request->only(['name']));
+        $project = $this->projectRepository->create($request->validated());
         return response()->json($project, 201);
     }
 
