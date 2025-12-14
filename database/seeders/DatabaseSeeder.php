@@ -19,12 +19,16 @@ class DatabaseSeeder extends Seeder
     {
         User::factory()->create([
             'name' => 'Test User',
-            'email' => 'test@example.com',
+            'email' => 'user@example.com',
         ]);
 
         Project::factory()
-            ->count(3)
-            ->has(Task::factory()->count(rand(20, 50)))
-            ->create();
+            ->count(40)
+            ->create()
+            ->each(function (Project $project) {
+                $project->tasks()->saveMany(
+                    Task::factory(rand(0, 50))->make()
+                );
+            });
     }
 }
