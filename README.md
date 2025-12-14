@@ -37,6 +37,10 @@ Um simples gerenciador de projetos.
    ```bash
    ./vendor/bin/sail artisan migrate
    ```
+8. Execute as seeds padrões do banco de dados:
+   ```bash
+   ./vendor/bin/sail artisan db:seed
+   ```
 
 ## Executando a Aplicação
 
