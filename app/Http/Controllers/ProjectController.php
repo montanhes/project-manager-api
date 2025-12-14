@@ -23,9 +23,10 @@ class ProjectController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json($this->projectRepository->all());
+        $perPage = $request->input('per_page', 15);
+        return response()->json($this->projectRepository->paginate($perPage));
     }
 
     /**
