@@ -92,22 +92,25 @@ class ProjectControllerTest extends TestCase
     }
 
     #[\PHPUnit\Framework\Attributes\Test]
-    public function it_index_returns_all_projects_without_authentication(): void
+    public function it_index_returns_projects_without_authentication(): void
     {
         $response = $this->getJson('/api/projects');
         $response->assertUnauthorized();
     }
 
     #[\PHPUnit\Framework\Attributes\Test]
-    public function it_index_returns_all_projects_with_authentication(): void
+    public function it_index_returns_projects_with_authentication(): void
     {
         Project::factory()->count(self::PROJECT_INDEX_COUNT)->create();
 
         $response = $this->actingAs($this->user)->getJson('/api/projects');
 
         $response->assertOk()
-            ->assertJsonIsArray()
-            ->assertJsonCount(self::PROJECT_INDEX_COUNT);
+            ->assertJson([
+                'data' => [],
+                'links' => [],
+            ])
+            ->assertJsonCount(self::PROJECT_INDEX_COUNT, 'data');
     }
 
     #[\PHPUnit\Framework\Attributes\Test]
@@ -116,7 +119,11 @@ class ProjectControllerTest extends TestCase
         $response = $this->actingAs($this->user)->getJson('/api/projects');
 
         $response->assertOk()
-            ->assertJson([]);
+            ->assertJson([
+                'data' => [],
+                'links' => [],
+            ])
+            ->assertJsonCount(0, 'data');
     }
 
     #[\PHPUnit\Framework\Attributes\Test]
