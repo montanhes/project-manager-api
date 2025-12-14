@@ -22,13 +22,21 @@ class DatabaseSeeder extends Seeder
             'email' => 'user@example.com',
         ]);
 
-        Project::factory()
+        $projects = Project::factory()
             ->count(40)
-            ->create()
-            ->each(function (Project $project) {
-                $project->tasks()->saveMany(
-                    Task::factory(rand(0, 50))->make()
-                );
-            });
+            ->create();
+
+        $progressBar = $this->command->getOutput()->createProgressBar(count($projects));
+        $progressBar->start();
+
+        $projects->each(function (Project $project) use ($progressBar) {
+            $project->tasks()->saveMany(
+                Task::factory(rand(0, 50))->make()
+            );
+            $progressBar->advance();
+        });
+
+        $progressBar->finish();
+        $this->command->getOutput()->newLine();
     }
 }
