@@ -95,7 +95,7 @@ Em resumo, a arquitetura busca um código limpo e desacoplado, onde cada compone
 
 **Documentação da API com Scramble**
 
-Para facilitar a documentação interativa e o teste dos endpoints da API, integramos o [Scramble](https://scramble.dedoc.co/installation). Por conta disso, alguns endpoints foram replicados no `routes/api.php` para que o Scramble possa processá-los corretamente e gerar uma interface intuitiva para explorar a API.
+Para facilitar a documentação interativa e o teste dos endpoints da API, integramos o [Scramble](https://scramble.dedoc.co/installation). Por conta disso, alguns endpoints foram replicados no `routes/api.php` para que o Scramble possa processá-los corretamente e gerar uma interface intuitiva para explorar a API. A documentação interativa está disponível em: `http://localhost/docs/api`
 
 Adicionalmente, no `app/Http/Controllers/AuthController.php`, você encontrará pares de métodos para login e logout:
 *   `login()` e `logout()`: Utilizados para autenticação e desautenticação via *API tokens* (gerado pelo Sanctum), ideal para clientes que consomem a API diretamente.
