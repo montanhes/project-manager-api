@@ -12,6 +12,35 @@ class Project extends Model
 
     protected $fillable = ['name'];
 
+    public function scopeWithProgress($query): void
+    {
+        $effortSql = Task::getEffortSql();
+
+        $progressSubquery = Task::selectRaw("
+            COALESCE(
+                ROUND(
+                    SUM(
+                        CASE WHEN completed = 1 THEN
+                            ($effortSql)
+                        ELSE 0
+                        END
+                    ) /
+                    NULLIF(
+                        SUM(
+                            $effortSql
+                        ),
+                        0
+                    ) * 100,
+                    2
+                ),
+                0.0
+            )
+        ")
+        ->whereColumn('project_id', 'projects.id');
+
+        $query->addSelect(['progress' => $progressSubquery]);
+    }
+
     public function tasks(): HasMany
     {
         return $this->hasMany(Task::class);

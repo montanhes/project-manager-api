@@ -23,6 +23,19 @@ class Task extends Model
         'difficulty' => TaskDifficulty::class,
     ];
 
+    public static function getEffortSql(): string
+    {
+        $cases = [];
+        foreach (TaskDifficulty::cases() as $difficulty) {
+            $cases[] = sprintf('WHEN %d THEN %d', $difficulty->value, $difficulty->points());
+        }
+
+        return sprintf(
+            'CASE difficulty %s ELSE 0 END',
+            implode(' ', $cases)
+        );
+    }
+
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
